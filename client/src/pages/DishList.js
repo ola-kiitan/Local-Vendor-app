@@ -25,9 +25,9 @@ export default function DishList() {
     <>
       <h1>all Dishes</h1>
       {dishes.map((dish) => (
-        <DishCard {...dish} />
+        <DishCard key={dish._id} {...dish} />
       ))}
-      <AddDish />
+      <AddDish refreshDishes={getAllDishes} />
     </>
   )
 }

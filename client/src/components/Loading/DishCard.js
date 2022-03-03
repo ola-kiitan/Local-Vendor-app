@@ -1,11 +1,12 @@
 import React from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-export default function DishCard({ name, origin }) {
+export default function DishCard(props) {
   return (
     <>
-      <h1>{name}</h1>
-      <h5>{origin}</h5>
+      <Link to={`/${props._id}`}>
+        <h1>{props.name}</h1>
+      </Link>
     </>
   )
 }

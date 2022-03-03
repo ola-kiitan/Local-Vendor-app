@@ -1,28 +1,37 @@
 import axios from 'axios'
-import React from 'react'
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-export default function AddDish(props) {
+export default function DishEdit(props) {
   const [name, setName] = useState('')
   // const [image, setImage] = useState('')
   const [origin, setOrigin] = useState('')
   const [ingredient, setIngredient] = useState('')
-  // const [location, setLocation] = useState('')
+  const { id } = useParams()
+  const navigate = useNavigate()
+
   const handleSubmit = (e) => {
     e.preventDefault()
     axios
-      .post('/dishes', { name, ingredient, origin })
-      .then((response) => {
-        console.log(response)
+      .put(`/${id}`, { name, ingredient, origin })
+      .then(() => {
+        navigate(`/${id}`)
       })
       .catch((err) => console.log(err))
-    setName('')
-    setOrigin('')
-    setIngredient('')
-    // refreshing the all dishes in DishList
-    props.refreshDishes()
   }
 
+  useEffect(() => {
+    axios
+      .get(`/${id}`)
+      .then((response) => {
+        const { name, origin, ingredient } = response.data
+        setName(name)
+        setOrigin(origin)
+        setIngredient(ingredient)
+      })
+      .catch((err) => console.log(err))
+  }, [id])
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -47,7 +56,7 @@ export default function AddDish(props) {
           value={ingredient}
           onChange={(e) => setIngredient(e.target.value)}
         />
-        <button type='submit'>Submit</button>
+        <button type='submit'>Update dish</button>
       </form>
     </>
   )
