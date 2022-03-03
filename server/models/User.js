@@ -12,10 +12,11 @@ const userSchema = new Schema(
     email: String,
     profilePicture: String,
     aboutMe: String,
-    menu: [
+    location: String,
+    dish: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Menu',
+        ref: 'Dish',
       },
     ],
   },

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const dishSchema = new Schema({
-  imageURL: String,
+  imageUrl: String,
   name: String,
   vendor: {
     type: Schema.Types.ObjectId,
