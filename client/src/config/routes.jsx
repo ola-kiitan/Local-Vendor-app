@@ -1,5 +1,6 @@
-import * as PATHS from "../utils/paths";
-import HomePage from "../pages/HomePage";
+import * as PATHS from '../utils/paths'
+import HomePage from '../pages/HomePage'
+import DishList from '../pages/DishList'
 
 const routes = (props) => {
   return [
@@ -7,7 +8,11 @@ const routes = (props) => {
       path: PATHS.HOMEPAGE,
       element: <HomePage {...props} />,
     },
-  ];
-};
+    {
+      path: PATHS.DISHLIST,
+      element: <DishList {...props} />,
+    },
+  ]
+}
 
-export default routes;
+export default routes
