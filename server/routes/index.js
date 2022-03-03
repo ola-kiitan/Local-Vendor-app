@@ -1,5 +1,7 @@
 const router = require('express').Router()
 const Dish = require('../models/Dish')
+// ********* require fileUploader in order to use it *********
+const fileUploader = require('../config/cloudinary.config')
 
 router.get('/', (req, res, next) => {
   res.status(200).json('All good in here')
@@ -11,10 +13,24 @@ router.get('/dishes', (req, res, next) => {
     res.status(200).json(dishes)
   })
 })
+// POST "/api/upload" => Route that will receive an image, send it to Cloudinary via the fileUploader and return the image URL
+router.post('/upload', fileUploader.single('imageUrl'), (req, res, next) => {
+  // console.log("file is: ", req.file)
+
+  if (!req.file) {
+    next(new Error('No file uploaded!'))
+    return
+  }
+
+  // Get the URL of the uploaded file and send it as a response.
+  // 'secure_url' can be any name, just make sure you remember to use the same when accessing it on the frontend
+
+  res.json({ secure_url: req.file.path })
+})
 // create a new dish
 router.post('/dishes', (req, res, next) => {
-  const { imageURL, name, ingredient, price, origin } = req.body
-  Dish.create({ imageURL, name, ingredient, price, origin })
+  const { imageUrl, name, ingredient, price, origin } = req.body
+  Dish.create({ imageUrl, name, ingredient, price, origin })
     .then((dish) => {
       res.status(201).json(dish)
     })
@@ -32,11 +48,11 @@ router.get('/:id', (req, res, next) => {
 })
 // update a dish
 router.put('/:id', (req, res, next) => {
-  const { imageURL, name, ingredient, price, origin } = req.body
+  const { imageUrl, name, ingredient, price, origin } = req.body
   Dish.findByIdAndUpdate(
     req.params.id,
     {
-      imageURL,
+      imageUrl,
       name,
       ingredient,
       price,

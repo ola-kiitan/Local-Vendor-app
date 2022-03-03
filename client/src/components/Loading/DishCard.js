@@ -5,7 +5,8 @@ export default function DishCard(props) {
   return (
     <>
       <Link to={`/${props._id}`}>
-        <h1>{props.name}</h1>
+        <img src={props.imageUrl} alt='food-pic' />
+        <h3>{props.name}</h3>
       </Link>
     </>
   )
