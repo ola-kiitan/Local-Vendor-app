@@ -3,6 +3,8 @@ import HomePage from '../pages/HomePage'
 import DishList from '../pages/DishList'
 import DishDetails from '../pages/DishDetails'
 import DishEdit from '../pages/DishEdit'
+import SignUp from '../pages/SignUp'
+import Login from '../pages/Login'
 
 const routes = (props) => {
   return [
@@ -21,6 +23,14 @@ const routes = (props) => {
     {
       path: PATHS.DISHEDIT,
       element: <DishEdit {...props} />,
+    },
+    {
+      path: PATHS.SIGNUP,
+      element: <SignUp {...props} />,
+    },
+    {
+      path: PATHS.LOGIN,
+      element: <Login {...props} />,
     },
   ]
 }

@@ -1,17 +1,23 @@
 const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
-// const jwt = require('jsonwebtoken')
-// const { isAuthenticated } = require('../middleware/jwt')
+const jwt = require('jsonwebtoken')
+const { isAuthenticated } = require('../middleware/jwt')
 
 router.post('/signup', (req, res, next) => {
-  const { email, password, username, location } = req.body
-  // check if email or name or password are empty
-  if (email === '' || password === '' || username === '' || location === '') {
+  const { email, password, username, location, role } = req.body
+  // check if entries are empty
+  if (
+    email === '' ||
+    password === '' ||
+    username === '' ||
+    location === '' ||
+    role === ''
+  ) {
     res.status(400).json({ message: 'Provide email, password and name' })
     return
   }
-  //validate the email address
+  //validate  email address
   const emailValid = email.includes('@')
   if (!emailValid) {
     res.status(400).json({ message: 'Provide a valid email address' })
@@ -32,10 +38,16 @@ router.post('/signup', (req, res, next) => {
     const salt = bcrypt.genSaltSync()
     const hashedPassword = bcrypt.hashSync(password, salt)
     // create the new user
-    return User.create({ email, password: hashedPassword, username, location })
+    return User.create({
+      email,
+      password: hashedPassword,
+      username,
+      location,
+      role,
+    })
       .then((createdUser) => {
-        const { email, username, location, _id } = createdUser
-        const user = { email, username, location, _id }
+        const { email, username, location, role, _id } = createdUser
+        const user = { email, username, location, role, _id }
         res.status(201).json({ user: user })
       })
       .catch((err) => {
@@ -45,42 +57,42 @@ router.post('/signup', (req, res, next) => {
   })
 })
 
-// router.post('/login', (req, res, next) => {
-//   const { email, password } = req.body
-//   if (email === '' || password === '') {
-//     res.status(400).json({ message: 'Provide email and password' })
-//     return
-//   }
-//   User.findOne({ email })
-//     .then((foundUser) => {
-//       if (!foundUser) {
-//         res.status(400).json({ message: 'User not found' })
-//         return
-//       }
-//       const passwordCorrect = bcrypt.compareSync(password, foundUser.password)
-//       if (passwordCorrect) {
-//         const { _id, email, name } = foundUser
-//         const payload = { _id, email, name }
-//         // create the json web token
-//         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
-//           algorithm: 'HS256',
-//           expiresIn: '12h',
-//         })
-//         res.status(200).json({ authToken })
-//       } else {
-//         res.status(401).json({ message: 'Unable to authenticate' })
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err)
-//       res.status(500).json({ message: 'Internal Server Error' })
-//     })
-// })
+router.post('/login', (req, res, next) => {
+  const { email, password } = req.body
+  if (email === '' || password === '') {
+    res.status(400).json({ message: 'Provide email and password' })
+    return
+  }
+  User.findOne({ email })
+    .then((foundUser) => {
+      if (!foundUser) {
+        res.status(400).json({ message: 'User not found' })
+        return
+      }
+      const passwordCorrect = bcrypt.compareSync(password, foundUser.password)
+      if (passwordCorrect) {
+        const { _id, email, username, location, role } = foundUser
+        const payload = { _id, email, username, location, role }
+        // create the json web token
+        const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
+          algorithm: 'HS256',
+          expiresIn: '12h',
+        })
+        res.status(200).json({ authToken })
+      } else {
+        res.status(401).json({ message: 'Unable to authenticate' })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json({ message: 'Internal Server Error' })
+    })
+})
 
-// router.get('/verify', isAuthenticated, (req, res, next) => {
-//   // if the token is valid we can access it on : req.payload
-//   console.log('request payload is: ', req.payload)
-//   res.status(200).json(req.payload)
-// })
+router.get('/verify', isAuthenticated, (req, res, next) => {
+  // if the token is valid we can access it on : req.payload
+  console.log('request payload is: ', req.payload)
+  res.status(200).json(req.payload)
+})
 
-// module.exports = router
+module.exports = router

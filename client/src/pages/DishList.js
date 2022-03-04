@@ -7,8 +7,11 @@ export default function DishList() {
   const [dishes, setDishes] = useState([])
   // get all the menus from the server
   const getAllDishes = () => {
+    const storedToken = localStorage.getItem('authToken')
     axios
-      .get('/dishes')
+      .get('/dishes', {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
       .then((response) => {
         console.log(response)
         // set the state of menus
