@@ -7,8 +7,11 @@ const errorHandler = (err) => {
 }
 
 const uploadImage = (file) => {
+  const storedToken = localStorage.getItem('authToken')
   return service
-    .post('/upload', file)
+    .post('/upload', file, {
+      headers: { Authorization: `Bearer ${storedToken}` },
+    })
     .then((res) => res.data)
     .catch(errorHandler)
 }

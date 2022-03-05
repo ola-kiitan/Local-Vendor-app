@@ -6,9 +6,12 @@ export default function DishDetails() {
   const [dish, setDish] = useState(null)
   const { id } = useParams()
   const navigate = useNavigate()
+  const storedToken = localStorage.getItem('authToken')
   const handleDelete = () => {
     axios
-      .delete(`/${id}`)
+      .delete(`/${id}`, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
       .then((response) => {
         console.log(response.data)
         navigate('/dishes')
@@ -18,13 +21,15 @@ export default function DishDetails() {
   useEffect(() => {
     // get the id from the backend
     axios
-      .get(`/${id}`)
+      .get(`/${id}`, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
       .then((response) => {
         console.log(response.data)
         setDish(response.data)
       })
       .catch((err) => console.log(err))
-  }, [id])
+  }, [])
 
   return (
     <>

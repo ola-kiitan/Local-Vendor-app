@@ -1,17 +1,16 @@
 const router = require('express').Router()
 const Dish = require('../models/Dish')
-const User = require('../models/User')
+
 // ********* require fileUploader in order to use it *********
 const fileUploader = require('../config/cloudinary.config')
-const { isAuthenticated } = require('../middleware/jwt')
 
 router.get('/', (req, res, next) => {
   res.status(200).json('All good in here')
 })
 
 // get all the menu from the database
-router.get('/dishes', isAuthenticated, (req, res, next) => {
-  Dish.find().then((dishes) => {
+router.get('/dishes', (req, res, next) => {
+  Dish.find({ vendor: req.payload._id }).then((dishes) => {
     res.status(200).json(dishes)
   })
 })
@@ -33,8 +32,22 @@ router.post('/upload', fileUploader.single('imageUrl'), (req, res, next) => {
 router.post('/dishes', (req, res, next) => {
   const vendorId = req.payload._id
   console.log('vendor id: ', vendorId)
-  const { imageUrl, name, ingredient, price, origin } = req.body
-  Dish.create({ imageUrl, name, ingredient, price, origin })
+  const {
+    imageUrl,
+    name,
+    ingredient,
+    price,
+    origin,
+    vendor = vendorId,
+  } = req.body
+  Dish.create({
+    imageUrl,
+    name,
+    ingredient,
+    price,
+    origin,
+    vendor: req.payload._id,
+  })
     .then((dish) => {
       res.status(201).json(dish)
     })

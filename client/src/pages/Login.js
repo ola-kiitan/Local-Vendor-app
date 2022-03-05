@@ -8,7 +8,7 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { storeToken, verifyStoredToken } = useContext(AuthContext)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState(undefined)
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
@@ -22,7 +22,7 @@ export default function Login() {
         const token = response.data.authToken
         storeToken(token)
         verifyStoredToken().then(() => {
-          // redirect to projects
+          // redirect to dishes
           navigate('/dishes')
         })
       })

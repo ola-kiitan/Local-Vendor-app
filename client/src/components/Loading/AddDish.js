@@ -9,7 +9,7 @@ export default function AddDish(props) {
   const [origin, setOrigin] = useState('')
   const [ingredient, setIngredient] = useState('')
   // const [location, setLocation] = useState('')
-
+  const storedToken = localStorage.getItem('authToken')
   const handleFileUpload = (e) => {
     // console.log("The file to be uploaded is: ", e.target.files[0]);
 
@@ -20,7 +20,9 @@ export default function AddDish(props) {
     uploadData.append('imageUrl', e.target.files[0])
 
     service
-      .uploadImage(uploadData)
+      .uploadImage(uploadData, {
+        headers: { Authorization: `Bearer ${storedToken}` },
+      })
       .then((response) => {
         // console.log("response is: ", response);
         // response carries "secure_url" which we can use to update the state
@@ -31,7 +33,13 @@ export default function AddDish(props) {
   const handleSubmit = (e) => {
     e.preventDefault()
     axios
-      .post('/dishes', { name, ingredient, origin, imageUrl })
+      .post(
+        '/dishes',
+        { name, ingredient, origin, imageUrl },
+        {
+          headers: { Authorization: `Bearer ${storedToken}` },
+        }
+      )
       .then((response) => {
         console.log(response)
       })

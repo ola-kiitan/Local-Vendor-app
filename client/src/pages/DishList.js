@@ -5,9 +5,9 @@ import AddDish from '../components/Loading/AddDish'
 
 export default function DishList() {
   const [dishes, setDishes] = useState([])
+  const storedToken = localStorage.getItem('authToken')
   // get all the menus from the server
   const getAllDishes = () => {
-    const storedToken = localStorage.getItem('authToken')
     axios
       .get('/dishes', {
         headers: { Authorization: `Bearer ${storedToken}` },
