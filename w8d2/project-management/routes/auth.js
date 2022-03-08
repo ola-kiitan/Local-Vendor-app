@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const { isAuthenticated } = require('../middleware/jwt')
 
 router.post('/signup', (req, res, next) => {
-  const { email, password, username } = req.body
+  const { email, password, username, role, location } = req.body
   // check if email or name or password are empty
   if (email === '' || password === '' || username === '') {
     res.status(400).json({ message: 'Provide email, password and name' })
@@ -32,10 +32,16 @@ router.post('/signup', (req, res, next) => {
     const salt = bcrypt.genSaltSync()
     const hashedPassword = bcrypt.hashSync(password, salt)
     // create the new user
-    return User.create({ email, password: hashedPassword, username })
+    return User.create({
+      email,
+      password: hashedPassword,
+      username,
+      role,
+      location,
+    })
       .then((createdUser) => {
-        const { email, username, _id } = createdUser
-        const user = { email, username, _id }
+        const { email, username, _id, role, location } = createdUser
+        const user = { email, username, _id, role, location }
         res.status(201).json({ user: user })
       })
       .catch((err) => {
@@ -59,8 +65,8 @@ router.post('/login', (req, res, next) => {
       }
       const passwordCorrect = bcrypt.compareSync(password, foundUser.password)
       if (passwordCorrect) {
-        const { _id, email, username } = foundUser
-        const payload = { _id, email, username }
+        const { _id, email, username, location, role } = foundUser
+        const payload = { _id, email, username, role, location }
         // create the json web token
         const authToken = jwt.sign(payload, process.env.JWT_SECRET, {
           algorithm: 'HS256',

@@ -9,7 +9,7 @@ import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import DishExplore from './pages/DishExplore'
 import ProtectedRoute from './components/ProtectedRoute'
-
+import ProfileCard from './components/ProfileCard'
 function App() {
   return (
     <div className='App'>
@@ -32,6 +32,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path='/profile/:id' element={<ProfileCard />} />
         <Route path='/explore' element={<DishExplore />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
