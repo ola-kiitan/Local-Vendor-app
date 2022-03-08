@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Dish = require('../models/Dish')
+const User = require('../models/User')
 // ********* require fileUploader in order to use it *********
 const fileUploader = require('../config/cloudinary.config')
 const { isAuthenticated } = require('../middleware/jwt')
@@ -15,7 +16,7 @@ router.get('/dishes', isAuthenticated, (req, res, next) => {
   })
 })
 // get all the menu from the data base
-router.get('/explore', (req, res, next) => {
+router.get('/explore/', (req, res, next) => {
   Dish.find()
     .populate('vendor')
     .then((dishes) => {
@@ -45,6 +46,7 @@ router.get('/explore', (req, res, next) => {
 // create a new dish
 router.post('/dishes', isAuthenticated, (req, res, next) => {
   const vendorId = req.payload
+
   const {
     imageUrl,
     name,
@@ -68,7 +70,13 @@ router.post('/dishes', isAuthenticated, (req, res, next) => {
     vendor: req.payload,
   })
     .then((dish) => {
-      res.status(201).json(dish)
+      User.findByIdAndUpdate(
+        req.payload,
+        { $push: { dish: dish._id } },
+        { new: true }
+      ).then(() => {
+        res.status(201).json(dish)
+      })
     })
     .catch((err) => next(err))
 })
@@ -113,7 +121,16 @@ router.delete('/:id', isAuthenticated, (req, res, next) => {
     })
     .catch((err) => next(err))
 })
-
+// get a specific dish user-profile
+router.get('/profile/:id', (req, res, next) => {
+  const id = req.params.id
+  User.findById(id)
+    .populate('dish')
+    .then((user) => {
+      console.log('uder', user)
+      res.status(200).json(user)
+    })
+})
 // You put the next routes here 👇
 // example: router.use("/auth", authRoutes)
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faInstagram,
@@ -8,14 +8,21 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 
 export default function DishView(props) {
-  // const vendor = props.vendor
-  // const username = vendor.username
-  console.log('dish-props:', props)
+  // console.log('dish-props:', props)
+  // const  id  = useParams()
   return (
     <>
       <img src={props.imageUrl} alt='food-pic' />
-      <h3>{props.name}</h3>
-      {props.vendor && <h3>{props.vendor.username}</h3>}
+
+      {props.vendor && (
+        <div>
+          <Link to={`/profile/${props.vendor._id}`}>
+            <h3>{props.name}</h3>
+          </Link>
+          <h3>By: {props.vendor.username}</h3>
+          <h2>{props.vendor.location}</h2>
+        </div>
+      )}
       <div>
         <a
           href={`https://www.facebook.com/${props.facebook}/`}
