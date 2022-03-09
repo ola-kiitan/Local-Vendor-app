@@ -15,14 +15,7 @@ function App() {
     <div className='App'>
       <Navbar />
       <Routes>
-        <Route
-          path='/'
-          element={
-            <ProtectedRoute redirectTo='/login'>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        <Route path='/' element={<Home />} />
 
         <Route
           path='/dishes'

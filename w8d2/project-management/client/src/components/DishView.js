@@ -1,19 +1,19 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faInstagram,
   faFacebook,
   faTwitter,
 } from '@fortawesome/free-brands-svg-icons'
+import '../components/Explore.css'
 
 export default function DishView(props) {
-  // console.log('dish-props:', props)
-  // const  id  = useParams()
   return (
-    <>
+    <div className='dish-card'>
       <img src={props.imageUrl} alt='food-pic' />
-
+      <h5>{props.name}</h5>
+      <h6>{props.origin}</h6>
       {props.vendor && (
         <div>
           <Link to={`/profile/${props.vendor._id}`}>
@@ -23,7 +23,7 @@ export default function DishView(props) {
           <h2>{props.vendor.location}</h2>
         </div>
       )}
-      <div>
+      <div className='social-link'>
         <a
           href={`https://www.facebook.com/${props.facebook}/`}
           className='facebook social'
@@ -43,26 +43,6 @@ export default function DishView(props) {
           <FontAwesomeIcon icon={faTwitter} size='2x' />
         </a>
       </div>
-    </>
+    </div>
   )
 }
-
-// {
-//   /* <a href="https://www.youtube.com/c/jamesqquick"
-//   className="youtube social">
-//   <FontAwesomeIcon icon={faYoutube} size="2x" />
-// </a> */
-// }
-// {
-//   /* <a href="https://www.facebook.com/learnbuildteach/"
-//   className="facebook social">
-//   <FontAwesomeIcon icon={faFacebook} size="2x" />
-// </a> */
-// }
-// // <a href="https://www.twitter.com/jamesqquick" className="twitter social">
-// //   <FontAwesomeIcon icon={faTwitter} size="2x" />
-// // </a>
-// // <a href="https://www.instagram.com/learnbuildteach"
-// //   className="instagram social">
-// //   <FontAwesomeIcon icon={faInstagram} size="2x" />
-// // </a>

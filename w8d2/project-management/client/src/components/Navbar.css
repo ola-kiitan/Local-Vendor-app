@@ -1,0 +1,139 @@
+/* nav bar */
+.navbar {
+  background: linear-gradient(90deg, rgb(28, 27, 27) 0%, rgb(26, 23, 23) 100%);
+  height: 80px;
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.nav-logo {
+  color: #fff;
+  display: flex;
+  padding-left: 1rem;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+}
+
+.nav-menu {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  grid-gap: 10px;
+  list-style: none;
+  text-align: center;
+  width: 75vw;
+  justify-content: end;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  height: 80px;
+}
+
+.nav-links {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links:hover {
+  /* background-color: #1888ff; */
+  border-radius: 4px;
+  transition: all 0.2s ease-out;
+}
+
+.menu-icon {
+  display: none;
+}
+.fa-spoon {
+  color: var(--clr-primarylite);
+  font-size: 2rem;
+  text-align: center;
+}
+
+@media screen and (max-width: 960px) {
+  .NavbarItems {
+    position: relative;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 50vh;
+    position: absolute;
+    top: 5rem;
+    right: -100%;
+    margin: 0;
+    padding: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+
+  .nav-menu.active {
+    background: #242222;
+    right: 0;
+    opacity: 1;
+    transition: all 0.5s ease;
+    z-index: 1;
+  }
+
+  .nav-links {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    display: table;
+  }
+
+  .nav-links:hover {
+    background-color: var(--clr-primarylite);
+    border-radius: 0;
+  }
+
+  .nav-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(25%, 50%);
+  }
+  .fa-times {
+    color: var(--clr-primarylite);
+    font-size: 2rem;
+  }
+  .fa-spoon {
+    color: var(--clr-primarylite);
+    font-size: 1rem;
+    text-align: center;
+  }
+  h3 {
+    font-size: 1rem;
+  }
+
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .nav-links-mobile {
+    display: block;
+    text-align: center;
+    padding: 1.5rem;
+    margin: 2rem auto;
+    border-radius: 4px;
+    width: 80%;
+    background: #1888ff;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5rem;
+  }
+}

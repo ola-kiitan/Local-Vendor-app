@@ -24,20 +24,22 @@ export default function ProfileCard() {
   return (
     <>
       {user && (
-        <>
-          <h1>{user.username}</h1>
-          <h1>{user.location}</h1>
-          <h1>{user.email}</h1>
+        <div className='profile-page'>
+          <div className='vendor-info'>
+            <h2>{user.username}</h2>
+            <h2>{user.location}</h2>
+            <h2>{user.email}</h2>
+          </div>
           {user.dish.map((dish) => {
             return (
-              <div key={dish._id}>
+              <div key={dish._id} className='dish-info'>
                 <img src={dish.imageUrl} alt='food-pic' />
                 <h3>{dish.name}</h3>
                 <p>{dish.ingredient}</p>
               </div>
             )
           })}
-        </>
+        </div>
       )}
     </>
   )

@@ -35,9 +35,9 @@ export default function Login() {
   }
 
   return (
-    <>
+    <div className='sign-up'>
       <h1>Log in</h1>
-      <form onSubmit={handleSubmit}>
+      <form className='input' onSubmit={handleSubmit}>
         <input
           type='email'
           value={email}
@@ -51,12 +51,18 @@ export default function Login() {
           placeholder='enter password'
         />
 
-        <button type='submit'>Log in</button>
+        <button type='submit' className='input-submit'>
+          Log in
+        </button>
       </form>
       {errorMessage && <h5>{errorMessage}</h5>}
       <h3>Don't have an account</h3>
-      <Link to='/signup'>sign up</Link>
-    </>
+      <button>
+        <Link className='link' to='/signup'>
+          sign up
+        </Link>
+      </button>
+    </div>
   )
 }
 
