@@ -2,8 +2,6 @@
 // https://www.npmjs.com/package/dotenv
 require('dotenv/config')
 // app.js
-const path = require('path')
-app.use(express.static(path.join(__dirname, '/client/build')))
 
 // ℹ️ Connects to the database
 require('./db')
@@ -26,7 +24,8 @@ app.use('/api/dishes', dishes)
 
 const auth = require('./routes/auth')
 app.use('/api/auth', auth)
-
+const path = require('path')
+app.use(express.static(path.join(__dirname, '/client/build')))
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 
 app.use((req, res) => {
