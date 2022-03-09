@@ -1,67 +1,104 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import './Navbar.css'
 import { AuthContext } from '../context/auth'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faBars, faSpoon } from '@fortawesome/free-solid-svg-icons'
 export default function Navbar() {
   const { isLoggedIn, logoutUser } = useContext(AuthContext)
+  const [click, setClick] = useState(false)
+  const handleClick = () => setClick(!click)
+  const closeMobileMenu = () => setClick(false)
+  // const onMouseEnter =()=>{
+  //   if(window.innerWidth < 960){
 
+  //   }
+  // }
   return (
-    <nav>
-      <Link to='/'>
-        <button>home</button>
-      </Link>
-      <Link to='/explore'>
-        <button>Explore</button>
-      </Link>
+    <nav className='navbar NavbarItems'>
+      <div className='nav-logo'>
+        <h3>Local-vendor</h3>
+        <FontAwesomeIcon icon={faSpoon} className='fa-spoon' />
+      </div>
       {isLoggedIn ? (
         <>
-          <Link to='/dishes'>
-            <button>dishes</button>
-          </Link>
-          <button onClick={logoutUser}>Logout</button>
+          <div className='menu-icon' onClick={handleClick}>
+            <FontAwesomeIcon
+              icon={click ? faTimes : faBars}
+              className='fa-times'
+            />
+          </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                home
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/explore'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                explore
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/dishes'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                dishes
+              </Link>
+            </li>
+            <li>
+              <Link to='/' onClick={logoutUser}>
+                Logout
+              </Link>
+            </li>
+          </ul>
         </>
       ) : (
         <>
-          <Link to='/signup'>
-            <button>Signup</button>
-          </Link>
-
-          <Link to='/login'>
-            <button>Login</button>
-          </Link>
+          <div className='menu-icon' onClick={handleClick}>
+            <FontAwesomeIcon
+              icon={click ? faTimes : faBars}
+              className='fa-times'
+            />
+          </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                home
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/explore'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                explore
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/signup'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                sign-up
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link to='/login' className='nav-links' onClick={closeMobileMenu}>
+                log-in
+              </Link>
+            </li>
+          </ul>
         </>
       )}
     </nav>
   )
 }
-
-// export default function Navbar() {
-
-// 	const { isLoggedIn, user, logoutUser } = useContext(AuthContext)
-
-// 	return (
-// 		<nav>
-// 			<Link to='/'>
-// 				<button>Home</button>
-// 			</Link>
-// 			{isLoggedIn ?
-// 				(
-// 					<>
-// 						<Link to='/projects'>
-// 							<button>Projects</button>
-// 						</Link>
-// 						<button onClick={logoutUser}>Logout</button>
-// 					</>
-// 				) : (
-// 					<>
-// 						<Link to='/signup'>
-// 							<button>Signup</button>
-// 						</Link>
-// 						<Link to='/login'>
-// 							<button>Login</button>
-// 						</Link>
-// 					</>
-// 				)}
-// 		</nav>
-// 	)
-// }
