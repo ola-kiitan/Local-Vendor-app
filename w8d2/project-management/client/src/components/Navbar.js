@@ -4,16 +4,13 @@ import './Navbar.css'
 import { AuthContext } from '../context/auth'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faBars, faSpoon } from '@fortawesome/free-solid-svg-icons'
+
 export default function Navbar() {
   const { isLoggedIn, logoutUser } = useContext(AuthContext)
   const [click, setClick] = useState(false)
   const handleClick = () => setClick(!click)
   const closeMobileMenu = () => setClick(false)
-  // const onMouseEnter =()=>{
-  //   if(window.innerWidth < 960){
 
-  //   }
-  // }
   return (
     <nav className='navbar NavbarItems'>
       <div className='nav-logo'>
@@ -52,8 +49,8 @@ export default function Navbar() {
                 dishes
               </Link>
             </li>
-            <li>
-              <Link to='/' onClick={logoutUser}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={logoutUser}>
                 Logout
               </Link>
             </li>

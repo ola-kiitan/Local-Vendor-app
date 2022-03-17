@@ -18,7 +18,6 @@ export default function SignUp() {
     axios
       .post('/api/auth/signup', requestBody)
       .then((response) => {
-        //redirect to login
         navigate('/dishes')
       })
       .catch((err) => {

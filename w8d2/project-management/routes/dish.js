@@ -20,7 +20,6 @@ router.get('/explore/', (req, res, next) => {
   Dish.find()
     .populate('vendor')
     .then((dishes) => {
-      console.log('the dishes:', dishes)
       res.status(200).json(dishes)
     })
 }) /
@@ -30,8 +29,6 @@ router.get('/explore/', (req, res, next) => {
     isAuthenticated,
     fileUploader.single('imageUrl'),
     (req, res, next) => {
-      // console.log("file is: ", req.file)
-
       if (!req.file) {
         next(new Error('No file uploaded!'))
         return
@@ -93,7 +90,16 @@ router.get('/:id', isAuthenticated, (req, res, next) => {
 
 // update a dish
 router.put('/edit/:id', isAuthenticated, (req, res, next) => {
-  const { imageUrl, name, ingredient, price, origin } = req.body
+  const {
+    imageUrl,
+    name,
+    ingredient,
+    price,
+    origin,
+    facebook,
+    twitter,
+    instagram,
+  } = req.body
   Dish.findByIdAndUpdate(
     req.params.id,
     {
@@ -127,11 +133,8 @@ router.get('/profile/:id', (req, res, next) => {
   User.findById(id)
     .populate('dish')
     .then((user) => {
-      console.log('uder', user)
       res.status(200).json(user)
     })
 })
-// You put the next routes here 👇
-// example: router.use("/auth", authRoutes)
 
 module.exports = router

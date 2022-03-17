@@ -11,12 +11,10 @@ export default function DishAdd(props) {
   const [facebook, setFacebook] = useState('')
   const [instagram, setInstagram] = useState('')
   const [twitter, setTwitter] = useState('')
+  const [price, setPrice] = useState('')
 
-  // const [location, setLocation] = useState('')
   const storedToken = localStorage.getItem('authToken')
   const handleFileUpload = (e) => {
-    // console.log("The file to be uploaded is: ", e.target.files[0]);
-
     const uploadData = new FormData()
 
     // imageUrl => this name has to be the same as in the model since we pass
@@ -26,8 +24,6 @@ export default function DishAdd(props) {
     service
       .uploadImage(uploadData)
       .then((response) => {
-        // console.log("response is: ", response);
-        // response carries "secure_url" which we can use to update the state
         setImageUrl(response.secure_url)
       })
       .catch((err) => console.log('Error while uploading the file: ', err))
@@ -37,7 +33,16 @@ export default function DishAdd(props) {
     axios
       .post(
         '/api/dishes/dishes',
-        { name, ingredient, origin, imageUrl, facebook, twitter, instagram },
+        {
+          name,
+          ingredient,
+          origin,
+          price,
+          imageUrl,
+          facebook,
+          twitter,
+          instagram,
+        },
         {
           'Content-Type': 'application/json',
           headers: { Authorization: `Bearer ${storedToken}` },
@@ -53,13 +58,15 @@ export default function DishAdd(props) {
     setTwitter('')
     setInstagram('')
     setFacebook('')
+    setPrice('')
     // refreshing the all dishes in DishList
     props.refreshDishes()
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <aside className='sign-up'>
+      <h2>Add new dish</h2>
+      <form className='input' onSubmit={handleSubmit}>
         <input
           type='text'
           id='name'
@@ -82,6 +89,15 @@ export default function DishAdd(props) {
           onChange={(e) => setIngredient(e.target.value)}
           placeholder='core ingredients'
         />
+
+        <input
+          type='text'
+          id='price'
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder='price'
+        />
+
         <input
           type='text'
           id='facebook'
@@ -101,59 +117,13 @@ export default function DishAdd(props) {
           id='twitter'
           value={twitter}
           onChange={(e) => setTwitter(e.target.value)}
-          placeholder='twiiter-handle'
+          placeholder='twiter-handle'
         />
         <input type='file' onChange={(e) => handleFileUpload(e)} />
-        <button type='submit'>Submit</button>
+        <button className='input-submit' type='submit'>
+          Submit
+        </button>
       </form>
-    </>
+    </aside>
   )
 }
-
-// import React, { useState } from 'react'
-// import axios from 'axios';
-
-// export default function AddProject(props) {
-
-// 	const [title, setTitle] = useState('');
-// 	const [description, setDescription] = useState('');
-
-// 	const handleSubmit = e => {
-// 		e.preventDefault()
-// 		// send the data from the state as a post request to
-// 		// the backend
-// 		axios.post('/api/projects', { title, description })
-// 			.then(response => {
-// 				console.log(response)
-// 			})
-// 			.catch(err => console.log(err))
-// 		// reset the form
-// 		setTitle('')
-// 		setDescription('')
-// 		// refresh the list of the projects in ProjectList
-// 		props.refreshProjects()
-// 	}
-
-// 	return (
-// 		<>
-// 			<h1>AddProject</h1>
-// 			<form onSubmit={handleSubmit}>
-// 				<label htmlFor="title">Title: </label>
-// 				<input
-// 					id="title"
-// 					type="text"
-// 					value={title}
-// 					onChange={e => setTitle(e.target.value)}
-// 				/>
-// 				<label htmlFor="title">Description: </label>
-// 				<input
-// 					id="description"
-// 					type="text"
-// 					value={description}
-// 					onChange={e => setDescription(e.target.value)}
-// 				/>
-// 				<button type="submit">Add this project</button>
-// 			</form>
-// 		</>
-// 	)
-// }

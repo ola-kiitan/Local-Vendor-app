@@ -2,28 +2,57 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import service from '../service'
 
 export default function DishEdit(props) {
   const [name, setName] = useState('')
-  // const [image, setImage] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
   const [origin, setOrigin] = useState('')
   const [ingredient, setIngredient] = useState('')
+  const [facebook, setFacebook] = useState('')
+  const [instagram, setInstagram] = useState('')
+  const [twitter, setTwitter] = useState('')
+  const [price, setPrice] = useState('')
   const { id } = useParams()
   const navigate = useNavigate()
   const storedToken = localStorage.getItem('authToken')
+  const handleFileUpload = (e) => {
+    const uploadData = new FormData()
+
+    // imageUrl => this name has to be the same as in the model since we pass
+    // req.body to .create() method when creating a new dish in '/dishes' POST route
+    uploadData.append('imageUrl', e.target.files[0])
+
+    service
+      .uploadImage(uploadData)
+      .then((response) => {
+        // response carries "secure_url" which we can use to update the state
+        setImageUrl(response.secure_url)
+      })
+      .catch((err) => console.log('Error while uploading the file: ', err))
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     axios
       .put(
         `/api/dishes/edit/${id}`,
-        { name, ingredient, origin },
+        {
+          name,
+          ingredient,
+          origin,
+          imageUrl,
+          price,
+          twitter,
+          instagram,
+          facebook,
+        },
         {
           headers: { Authorization: `Bearer ${storedToken}` },
         }
       )
       .then(() => {
-        navigate(`/dishes/${id}`)
+        navigate(`/dishes`)
       })
       .catch((err) => console.log(err))
   }
@@ -42,8 +71,9 @@ export default function DishEdit(props) {
       .catch((err) => console.log(err))
   }, [])
   return (
-    <>
-      <form onSubmit={handleSubmit}>
+    <div className='sign-up'>
+      <h2>Update dish details</h2>
+      <form className='input' onSubmit={handleSubmit}>
         <input
           type='text'
           id='name'
@@ -65,77 +95,39 @@ export default function DishEdit(props) {
           value={ingredient}
           onChange={(e) => setIngredient(e.target.value)}
         />
-        <button type='submit'>Update dish</button>
+        <input
+          type='text'
+          id='facebook'
+          value={facebook}
+          onChange={(e) => setFacebook(e.target.value)}
+          placeholder='facebook-handle'
+        />
+        <input
+          type='text'
+          id='instagram'
+          value={instagram}
+          onChange={(e) => setInstagram(e.target.value)}
+          placeholder='instagram-handle'
+        />
+        <input
+          type='text'
+          id='twitter'
+          value={twitter}
+          onChange={(e) => setTwitter(e.target.value)}
+          placeholder='twiter-handle'
+        />
+        <input
+          type='text'
+          id='price'
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder='price'
+        />
+        <input type='file' onChange={(e) => handleFileUpload(e)} />
+        <button className='input-submit' type='submit'>
+          Update dish
+        </button>
       </form>
-    </>
+    </div>
   )
 }
-
-// import axios from 'axios';
-// import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-
-// export default function EditProject() {
-
-// 	const [title, setTitle] = useState('');
-// 	const [description, setDescription] = useState('');
-
-// 	const { id } = useParams()
-
-// 	const navigate = useNavigate()
-
-// 	const handleSubmit = e => {
-// 		e.preventDefault()
-// 		const requestBody = { title, description }
-// 		axios.put(`/api/projects/${id}`, requestBody)
-// 			.then(() => {
-// 				// this redirects using react router
-// 				navigate(`/projects/${id}`)
-// 			})
-// 			.catch(err => console.log(err))
-// 	}
-
-// 	const deleteProject = () => {
-// 		axios.delete(`/api/projects/${id}`)
-// 			.then(() => {
-// 				// redirect to the project list
-// 				navigate('/projects')
-// 			})
-// 			.catch(err => console.log(err))
-// 	}
-
-// 	useEffect(() => {
-// 		axios.get(`/api/projects/${id}`)
-// 			.then(response => {
-// 				const { title, description } = response.data
-// 				setTitle(title)
-// 				setDescription(description)
-// 			})
-// 			.catch(err => console.log(err))
-// 	}, [])
-
-// 	return (
-// 		<>
-// 			<h1>Edit this project</h1>
-// 			<form onSubmit={handleSubmit}>
-// 				<label htmlFor="title">Title: </label>
-// 				<input
-// 					id="title"
-// 					type="text"
-// 					value={title}
-// 					onChange={e => setTitle(e.target.value)}
-// 				/>
-// 				<label htmlFor="title">Description: </label>
-// 				<input
-// 					id="description"
-// 					type="text"
-// 					value={description}
-// 					onChange={e => setDescription(e.target.value)}
-// 				/>
-// 				<button type="submit">Update this project</button>
-// 			</form>
-// 			<button onClick={deleteProject}>Delete this project</button>
-// 		</>
-
-// 	)
-// }

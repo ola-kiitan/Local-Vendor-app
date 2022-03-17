@@ -3,13 +3,11 @@
   margin: 0;
   box-sizing: border-box;
 }
-img {
-  border-radius: 8px;
+html,
+body {
   max-width: 100%;
-  height: auto;
-  display: block;
+  overflow-x: hidden;
 }
-
 :root {
   --clr-primary: #678e3e;
   --clr-primarylite: #beed8c;
@@ -173,7 +171,7 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30rem;
+  width: 25rem;
   float: right;
 }
 .sign-up h1,
@@ -213,4 +211,18 @@ select {
   text-decoration: none;
   color: var(--clr-grey1);
 }
-/* log-in page*/
+.card-btn {
+  display: flex;
+  justify-content: space-between;
+}
+.dish-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+aside {
+  justify-self: flex-end;
+}
+.page h5 {
+  text-align: center;
+}

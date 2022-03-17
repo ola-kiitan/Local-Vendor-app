@@ -4,6 +4,23 @@ import DishView from '../components/DishView'
 
 export default function DishExplore() {
   const [dishes, setDishes] = useState([])
+  const [search, setSearch] = useState('')
+  const [searchName, setSearchName] = useState('')
+
+  const inputHandler = (event) => {
+    setSearch(event.target.value.toLowerCase())
+    event.preventDefault()
+  }
+  const nameHandler = (event) => {
+    setSearchName(event.target.value.toLowerCase())
+    event.preventDefault()
+  }
+  let searchTerm = dishes.filter((dish) =>
+    `${dish.origin}`.toLowerCase().includes(search)
+  )
+  searchTerm = searchTerm.filter((dish) =>
+    `${dish.name}`.toLowerCase().includes(searchName)
+  )
   const getAllDishes = () => {
     axios
       .get('/api/dishes/explore')
@@ -21,8 +38,25 @@ export default function DishExplore() {
   }, [])
   return (
     <>
-      <h1>all Dishes</h1>
-      {dishes.map((dish) => (
+      <div className='searchInputs'>
+        <input
+          type='text'
+          className='searchInput'
+          value={search}
+          onChange={inputHandler}
+          placeholder='search by origin'
+        />
+
+        <input
+          type='text'
+          className='searchInput'
+          value={searchName}
+          onChange={nameHandler}
+          placeholder='search by name'
+        />
+      </div>
+
+      {searchTerm.map((dish) => (
         <DishView key={dish._id} {...dish} />
       ))}
     </>
