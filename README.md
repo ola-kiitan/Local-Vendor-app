@@ -7,12 +7,10 @@ The app serves as a market-place where vendors can create an account and post di
  and customers can see a list of food created by different vendors before making a booking through their email
 or redirect to other contact platform provided by the vendor.
 
+```
 # Tech
-The Project was with the MERN stack, HTML, CSS.
+
+The Project was with the MERN stack, HTML, CSS 
 
 # Demo
 The demo of the project can be found on https://local-vendor.herokuapp.com
-
-
-
-```
